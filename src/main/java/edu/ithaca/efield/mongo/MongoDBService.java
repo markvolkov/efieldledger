@@ -14,7 +14,7 @@ public class MongoDBService implements DBService {
   }
 
   public DBHealthChecker getDBHealthChecker() {
-    return null;
+    return new MongoHealthCheck();
   }
 
 }
