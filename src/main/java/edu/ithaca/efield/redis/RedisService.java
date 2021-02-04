@@ -4,7 +4,7 @@ import edu.ithaca.efield.Environment;
 import edu.ithaca.efield.utils.DBHealthChecker;
 import edu.ithaca.efield.utils.DBService;
 import io.lettuce.core.cluster.RedisClusterClient;
-import io.lettuce.core.dynamic.RedisCommandFactory;
+import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,17 +14,14 @@ public class RedisService implements DBService {
   private static final Logger LOGGER = Logger.getLogger(RedisService.class.getName());
 
   private final RedisClusterClient redisClusterClient;
-  private RedisCommandFactory redisCommandFactory;
+  private StatefulRedisClusterConnection<String, String> redisClusterConnection;
 
   public RedisService(Environment environment) {
     this.redisClusterClient = RedisClusterClient.create(environment.getRedisUri());
   }
 
-  /**
-   * You connect at the publisher and subscriber level and the one health-check task
-   */
   public void connect() {
-    throw new UnsupportedOperationException();
+    this.redisClusterConnection = this.redisClusterClient.connect();
   }
 
   public void disconnect() {
@@ -35,12 +32,12 @@ public class RedisService implements DBService {
     }
   }
 
-  public RedisClusterClient getRedisClusterClient() {
-    return redisClusterClient;
+  public StatefulRedisClusterConnection<String, String> getRedisClusterConnection() {
+    return redisClusterConnection;
   }
 
   public DBHealthChecker getDBHealthChecker() {
-    return new RedisHealthCheck(this.redisClusterClient);
+    return new RedisHealthCheck(this.redisClusterConnection);
   }
 
 }

@@ -4,33 +4,33 @@ import edu.ithaca.efield.pubsub.Publisher;
 import edu.ithaca.efield.pubsub.Subscriber;
 import java.util.Objects;
 
-public class ChannelBuilder<K, V> {
+public class ChannelBuilder {
 
   private String channelName;
-  private Publisher<K, V> publisher;
-  private Subscriber<K, V> subscriber;
+  private Publisher<String, String> publisher;
+  private Subscriber<String, String> subscriber;
 
   public ChannelBuilder() {
 
   }
 
-  public ChannelBuilder<K, V> withChannelName(String channelName) {
+  public ChannelBuilder withChannelName(String channelName) {
     this.channelName = channelName;
     return this;
   }
 
-  public ChannelBuilder<K, V> withPublisher(Publisher<K, V> publisher) {
+  public ChannelBuilder withPublisher(Publisher<String, String> publisher) {
     this.publisher = publisher;
     return this;
   }
 
-  public ChannelBuilder<K, V> withSubscriber(Subscriber<K, V> subscriber) {
+  public ChannelBuilder withSubscriber(Subscriber<String, String> subscriber) {
     this.subscriber = subscriber;
     return this;
   }
 
-  public Channel<K, V> build() {
-    return new Channel<>(Objects.requireNonNull(this.channelName),
+  public Channel build() {
+    return new Channel(Objects.requireNonNull(this.channelName),
         Objects.requireNonNull(this.publisher), Objects.requireNonNull(this.subscriber));
   }
 

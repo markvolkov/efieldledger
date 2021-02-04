@@ -32,6 +32,7 @@ public class ChannelManager {
     if (channel == null) {
       return null;
     }
+    channel.destroy();
     return channel;
   }
 

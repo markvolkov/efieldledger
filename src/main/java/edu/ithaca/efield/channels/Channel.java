@@ -15,6 +15,10 @@ public class Channel {
     this.subscriber = subscriber;
   }
 
+  public void destroy() {
+
+  }
+
   public String getChannelName() {
     return channelName;
   }

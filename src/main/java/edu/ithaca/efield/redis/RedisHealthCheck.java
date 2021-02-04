@@ -3,7 +3,7 @@ package edu.ithaca.efield.redis;
 import edu.ithaca.efield.utils.DBHealthChecker;
 import io.lettuce.core.RedisFuture;
 import io.lettuce.core.cluster.RedisClusterClient;
-import io.lettuce.core.protocol.RedisCommand;
+import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,15 +12,15 @@ public class RedisHealthCheck implements DBHealthChecker {
 
   private static final Logger LOGGER = Logger.getLogger(RedisHealthCheck.class.getName());
 
-  private final RedisClusterClient redisClusterClient;
+  private final StatefulRedisClusterConnection<String, String> redisClusterConnection;
 
-  public RedisHealthCheck(RedisClusterClient redisClusterClient) {
-    this.redisClusterClient = redisClusterClient;
+  public RedisHealthCheck(StatefulRedisClusterConnection<String, String> redisClusterConnection) {
+    this.redisClusterConnection = redisClusterConnection;
   }
 
   @Override
   public boolean checkHealth() {
-    RedisFuture<String> pingFuture = redisClusterClient.connect().async().ping();
+    RedisFuture<String> pingFuture = this.redisClusterConnection.async().ping();
     try {
       String result = pingFuture.get();
       return result != null && !result.isEmpty() && result.equalsIgnoreCase("PONG");
