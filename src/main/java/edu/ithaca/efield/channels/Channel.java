@@ -6,10 +6,10 @@ import edu.ithaca.efield.pubsub.Subscriber;
 public class Channel {
 
   private final String channelName;
-  private final Publisher publisher;
-  private final Subscriber subscriber;
+  private final Publisher<String, String> publisher;
+  private final Subscriber<String, String> subscriber;
 
-  public Channel(String channelName, Publisher publisher, Subscriber subscriber) {
+  public Channel(String channelName, Publisher<String, String> publisher, Subscriber<String, String> subscriber) {
     this.channelName = channelName;
     this.publisher = publisher;
     this.subscriber = subscriber;
@@ -19,11 +19,11 @@ public class Channel {
     return channelName;
   }
 
-  public Publisher getPublisher() {
+  public Publisher<String, String> getPublisher() {
     return publisher;
   }
 
-  public Subscriber getSubscriber() {
+  public Subscriber<String, String> getSubscriber() {
     return subscriber;
   }
 

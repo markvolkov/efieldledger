@@ -37,14 +37,16 @@ public class Environment {
     if (object == null) {
       throw new RuntimeException("Environment was not found!");
     }
-    return new Environment(object.get("mongoUri").getAsString(), object.get("redisUri").getAsString());
+    return new Environment(object.get("mongoUri").getAsString(),
+        object.get("redisUri").getAsString());
   }
 
-  public static JsonObject readEnvironment(String env) {
+  private static JsonObject readEnvironment(String env) {
     try {
       return Main.getGson().fromJson(new FileReader(
-          Paths.get(Objects.requireNonNull(Thread.currentThread().getContextClassLoader()
-              .getResource("env." + env.trim().toLowerCase() + ".json")).toURI()).toFile()), JsonObject.class);
+              Paths.get(Objects.requireNonNull(Thread.currentThread().getContextClassLoader()
+                  .getResource("env." + env.trim().toLowerCase() + ".json")).toURI()).toFile()),
+          JsonObject.class);
     } catch (URISyntaxException | FileNotFoundException e) {
       LOGGER.log(Level.SEVERE, "Error with reading environment for env: " + env, e);
     }
