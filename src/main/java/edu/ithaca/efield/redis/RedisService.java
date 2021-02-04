@@ -15,6 +15,7 @@ public class RedisService implements DBService {
 
   private final RedisClusterClient redisClusterClient;
   private StatefulRedisClusterConnection<String, String> redisClusterConnection;
+  private DBHealthChecker redisHealthCheck;
 
   public RedisService(Environment environment) {
     this.redisClusterClient = RedisClusterClient.create(environment.getRedisUri());
@@ -22,6 +23,8 @@ public class RedisService implements DBService {
 
   public void connect() {
     this.redisClusterConnection = this.redisClusterClient.connect();
+    this.redisHealthCheck = new RedisHealthCheck(this.redisClusterConnection);
+    //TODO: Build initial cache from database on initialization
   }
 
   public void disconnect() {
@@ -37,7 +40,10 @@ public class RedisService implements DBService {
   }
 
   public DBHealthChecker getDBHealthChecker() {
-    return new RedisHealthCheck(this.redisClusterConnection);
+    if (this.redisHealthCheck == null) {
+      throw new RuntimeException("You must connect to the database first!");
+    }
+    return this.redisHealthCheck;
   }
 
 }

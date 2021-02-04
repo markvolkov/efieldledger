@@ -5,6 +5,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+/***
+ * A utility class for scheduling tasks
+ */
 public class ScheduledJobPool {
 
   private static final ScheduledJobPool INSTANCE = new ScheduledJobPool();

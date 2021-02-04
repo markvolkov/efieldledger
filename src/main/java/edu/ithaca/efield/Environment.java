@@ -32,6 +32,11 @@ public class Environment {
     return redisUri;
   }
 
+  /***
+   * This static method is responsible for returning the proper environment configuration
+   * @param env The requested environment
+   * @return The instantiated environment object
+   */
   public static Environment getEnvironment(String env) {
     JsonObject object = readEnvironment(env);
     if (object == null) {
@@ -41,6 +46,11 @@ public class Environment {
         object.get("redisUri").getAsString());
   }
 
+  /***
+   * This private static method is responsible for reading the contents of the environment json file
+   * @param env The request environment
+   * @return The JsonObject that represents the environment to load
+   */
   private static JsonObject readEnvironment(String env) {
     try {
       return Main.getGson().fromJson(new FileReader(

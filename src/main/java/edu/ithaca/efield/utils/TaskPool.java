@@ -8,6 +8,9 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/***
+ * A utility class for running tasks
+ */
 public class TaskPool {
 
   private static final TaskPool INSTANCE = new TaskPool();
