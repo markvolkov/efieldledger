@@ -34,7 +34,7 @@ public class Ledger {
     //normalize the key
     final String key = studentName.trim().toLowerCase() + "%" + classId.trim().toLowerCase();
     if (history.containsKey(key)) {
-      entries.remove(history.get(studentName.trim().toLowerCase()));
+      entries.remove(history.get(key));
     } else {
       LeaderboardEntry leaderboardEntry = new LeaderboardEntry(studentName, this.track, classId,
           score);
