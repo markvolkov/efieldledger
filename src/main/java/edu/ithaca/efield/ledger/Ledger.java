@@ -1,13 +1,14 @@
 package edu.ithaca.efield.ledger;
 
-import com.google.gson.JsonObject;
 import edu.ithaca.efield.Main;
 import edu.ithaca.efield.models.LeaderboardEntry;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class Ledger {
 
@@ -35,7 +36,8 @@ public class Ledger {
     if (history.containsKey(key)) {
       entries.remove(history.get(studentName.trim().toLowerCase()));
     } else {
-      LeaderboardEntry leaderboardEntry = new LeaderboardEntry(studentName, this.track, classId, score);
+      LeaderboardEntry leaderboardEntry = new LeaderboardEntry(studentName, this.track, classId,
+          score);
       entries.add(leaderboardEntry);
       history.put(key, leaderboardEntry);
       //TODO: add to redis cache
@@ -53,12 +55,23 @@ public class Ledger {
     return history.getOrDefault(key, new LeaderboardEntry());
   }
 
-  /**
-   * This will convert the current entries into a json string
+  /***
+   * This will convert the current global entries into a json string
    * @return The json payload
    */
   public String getLedgerAsPayload() {
     return Main.getGson().toJson(this.entries);
+  }
+
+  /***
+   * This will convert the current class entries into a json string
+   * @param classId The classId to group by
+   * @return The json payload
+   */
+  public String getLedgerAsPayload(String classId) {
+    Map<Object, List<LeaderboardEntry>> map = this.entries.stream().parallel().collect(Collectors
+        .groupingBy(entry -> entry.getClassId().trim().equalsIgnoreCase(classId.trim())));
+    return Main.getGson().toJson(map.get(true));
   }
 
   /***
